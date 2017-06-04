@@ -2,19 +2,16 @@
 import six
 import sys
 from flask import Flask, jsonify, abort, request, make_response, url_for
-from flask_bcrypt import Bcrypt
 from flask_httpauth import HTTPBasicAuth
-from database import DatabaseHelper
-from database import TestDB
+from database import DatabaseHelper, TestDB
 
 app = Flask(__name__, static_url_path="")
 auth = HTTPBasicAuth()
-bcrypt = Bcrypt(app)
 
-if "utrunner" or "nosetests" or "pytestrunner" in sys.argv[0]:  # use test database if unit test
-    db = TestDB()
-else:
+if "app.py" == sys.argv[0]:
     db = DatabaseHelper()
+else:
+    db = TestDB()  # if running unit tests
 
 
 @auth.get_password
