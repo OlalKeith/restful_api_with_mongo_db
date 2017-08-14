@@ -1,6 +1,12 @@
-import bcrypt
+import bcrypt, sys
 from pymongo import MongoClient
 from pymongo import errors
+
+
+if "app.py" == sys.argv[0]:
+    ENCRYPTION_ROUNDS = 12
+else:
+    ENCRYPTION_ROUNDS = 4  # if running unit tests
 
 
 class DatabaseHelper(object):
@@ -61,7 +67,7 @@ class DatabaseHelper(object):
         return self.users.find_one({'username': username}, {'_id': 0})
 
     def create_non_existing_user_to_database(self, username, password):
-        hash_ = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(12))
+        hash_ = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(ENCRYPTION_ROUNDS))
         user_info = {'username': username, 'hash': hash_}
         user = self.retrieve_user_by_username(username)
         if not user:
