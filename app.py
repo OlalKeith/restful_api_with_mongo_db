@@ -14,13 +14,6 @@ else:
     db = TestDB()  # if running unit tests
 
 
-@auth.get_password
-def check_password(username):
-    if username == 'mojo' or username == 'kojo':
-        return 'python'
-    return None
-
-
 @auth.verify_password
 def verify_password(username, password):
     return db.check_password_hash_for_user(username, password)

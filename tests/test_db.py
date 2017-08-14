@@ -23,12 +23,13 @@ task2 = {
         'done': False
     }
 
+test_db = TestDB()
 
 class TestApp(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         self.app = app.test_client()
-        self.db = TestDB()
+        self.db = test_db
         self.db.tasks.insert(task1)
         self.db.tasks.insert(task2)
 
